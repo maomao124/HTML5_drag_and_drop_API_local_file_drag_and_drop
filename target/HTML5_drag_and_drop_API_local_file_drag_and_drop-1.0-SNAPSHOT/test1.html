@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<!--
+Project name(项目名称)：HTML5_drag_and_drop_API_local_file_drag_and_drop
+  File name(文件名): test1
+  Authors(作者）: mao
+  Author QQ：1296193245
+  GitHub：https://github.com/maomao124/
+  Date(创建日期)： 2022/3/31
+  Time(创建时间)： 19:19
+  Description(描述)： 无
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-color: #89d8ff
+        }
+
+        div#fileCheck {
+            background-color: #43ff5f;
+            width: 50vw;
+            height: 50vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            text-align: center;
+            color: #6b06ff;
+            transition: all 1s linear 0s;
+        }
+
+        div#status {
+            color: #fff30a;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="fileCheck" ondragover="allowDrop(event)" ondrop="drop(event)">
+    请将文件拖放至此处
+</div>
+<div id="status"></div>
+<script>
+    //ondragover事件回调函数
+    function allowDrop(ev)
+    {
+        //解禁当前元素为可放置被拖拽元素的区域
+        ev.preventDefault();
+    }
+
+    //ondrop事件回调函数
+    function drop(event)
+    {
+        //解禁当前元素为可放置被拖拽元素的区域
+        event.preventDefault();
+        //获取拖拽的文件列表
+        //DataTransfer.files属性是拖动操作list of the files 。如果操作不包含文件，则列表为空。
+        // 此功能可用于将文件从用户桌面拖动到浏览器。
+        var files = event.dataTransfer.files;
+        //用于记录文件的状态，包括文件名、文件大小、修改时间等
+        var fileStatus = "";
+        //用于获取单个文件对象
+        var file;
+        //使用for循环遍历所有文件
+        for (var i = 0; i < files.length; i++)
+        {
+            //获取当前文件对象
+            file = files[i];
+            //获取最近修改文件的日期对象
+            var lastModified = file.lastModifiedDate;
+            //将日期时间显示为纯文本形式
+            var lastModifiedStr = lastModified.toLocaleString();
+
+            //组合文件相关信息
+            fileStatus +=
+                '<li>文件名称：' + file.name
+                + '<br>文件类型：' + file.type
+                + '<br>文件大小：' + file.size
+                + '字节<br>修改时间：' + lastModifiedStr + '</li>';
+        }
+        //获取文件状态显示栏对象
+        var status = document.getElementById("status");
+        //更新文件信息至显示栏中
+        status.innerHTML = '<ul>' + fileStatus + '</ul>';
+    }
+</script>
+</body>
+</html>
